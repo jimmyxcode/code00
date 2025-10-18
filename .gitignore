@@ -1,0 +1,42 @@
+# Xcode
+xcuserdata/
+DerivedData/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.xcworkspace/xcuserdata/
+
+# SwiftPM
+.build/
+
+# CocoaPods / Carthage（用到才保留）
+Pods/
+Carthage/Build/
+
+# Archives / dSYM
+*.xcarchive
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Fastlane / Logs
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+*.log
+
+# Misc
+.DS_Store
+*.env
+Secrets.plist
+GoogleService-Info.plist
+
+# Project specific
+*.backup
+fix_*.sh
+*_DIAGNOSIS.md
+*_FIX_GUIDE.md
+*_COMPLETE.md
+*_FEATURE.md
+README_XCODE_SETUP.md
+STABLE_UI_INTEGRATION.md

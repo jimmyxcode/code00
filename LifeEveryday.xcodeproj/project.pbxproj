@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E26511192EA3E099007EDFCB /* AboutUSv2 in Frameworks */ = {isa = PBXBuildFile; productRef = E26511182EA3E099007EDFCB /* AboutUSv2 */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		E2961E772EA1834F007CD85F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E26511192EA3E099007EDFCB /* AboutUSv2 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = LifeEveryday;
 			packageProductDependencies = (
+				E26511182EA3E099007EDFCB /* AboutUSv2 */,
 			);
 			productName = LifeEveryday;
 			productReference = E2961E682EA1834D007CD85F /* LifeEveryday.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = E2961E5F2EA1834D007CD85F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E26511172EA3E099007EDFCB /* XCLocalSwiftPackageReference "../Add Package/AboutUSv2" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E2961E692EA1834D007CD85F /* Products */;
 			projectDirPath = "";
@@ -411,15 +420,16 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jimmylo.LifeEveryday;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Debug;
@@ -450,15 +460,16 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.01;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jimmylo.LifeEveryday;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Release;
@@ -593,6 +604,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		E26511172EA3E099007EDFCB /* XCLocalSwiftPackageReference "../Add Package/AboutUSv2" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../Add Package/AboutUSv2";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E26511182EA3E099007EDFCB /* AboutUSv2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AboutUSv2;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E2961E602EA1834D007CD85F /* Project object */;
 }

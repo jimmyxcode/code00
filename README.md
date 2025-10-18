@@ -1,18 +1,16 @@
 # LifeEveryday
 
-An iOS app (SwiftUI + Core Data + CloudKit) to track recurring life events (e.g., haircut, car wash, toothbrush changes).
+iOS app (SwiftUI + Core Data + CloudKit) to track recurring life events (haircut, car wash, toothbrush, etc.).
 
 ## Features
 - One-tap Quick Record
-- Average interval, next due, countdown
-- Elegant progress UI with glass-style design
+- Avg interval / Next due / Countdown
+- Elegant progress bar UI
 - iCloud sync (NSPersistentCloudKitContainer)
-- Safe local persistence
-- Statistics and analytics
 
 ## Build
-- Xcode 16+ / iOS 17+  
-- Open `LifeEveryday.xcodeproj` and run **LifeEveryday** target.
+- Xcode 16+ / iOS 17+
+- Open `LifeEveryday.xcodeproj` (or `.xcworkspace`) and run **LifeEveryday** target.
 
 ## Structure
 - `Logic/` — Stats & time conversions

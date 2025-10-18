@@ -9,7 +9,7 @@ DerivedData/
 # SwiftPM
 .build/
 
-# CocoaPods / Carthage（用到才保留）
+# CocoaPods / Carthage（若有才保留）
 Pods/
 Carthage/Build/
 
@@ -25,9 +25,10 @@ fastlane/Preview.html
 fastlane/screenshots
 *.log
 
-# Misc
+# Misc / Secrets
 .DS_Store
 *.env
+*.env.*
 Secrets.plist
 GoogleService-Info.plist
 

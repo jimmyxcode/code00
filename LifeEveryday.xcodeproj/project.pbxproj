@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		E26511192EA3E099007EDFCB /* AboutUSv2 in Frameworks */ = {isa = PBXBuildFile; productRef = E26511182EA3E099007EDFCB /* AboutUSv2 */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		E2961E772EA1834F007CD85F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -56,7 +52,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E26511192EA3E099007EDFCB /* AboutUSv2 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,7 +112,6 @@
 			);
 			name = LifeEveryday;
 			packageProductDependencies = (
-				E26511182EA3E099007EDFCB /* AboutUSv2 */,
 			);
 			productName = LifeEveryday;
 			productReference = E2961E682EA1834D007CD85F /* LifeEveryday.app */;
@@ -202,7 +196,6 @@
 			mainGroup = E2961E5F2EA1834D007CD85F;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				E26511172EA3E099007EDFCB /* XCLocalSwiftPackageReference "../Add Package/AboutUSv2" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E2961E692EA1834D007CD85F /* Products */;
@@ -604,20 +597,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		E26511172EA3E099007EDFCB /* XCLocalSwiftPackageReference "../Add Package/AboutUSv2" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = "../Add Package/AboutUSv2";
-		};
-/* End XCLocalSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		E26511182EA3E099007EDFCB /* AboutUSv2 */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = AboutUSv2;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E2961E602EA1834D007CD85F /* Project object */;
 }

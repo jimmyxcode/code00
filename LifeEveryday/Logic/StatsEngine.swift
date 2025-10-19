@@ -26,11 +26,14 @@ public struct EventStats {
     /// >0 表示剩餘天數；<0 表示逾期天數（負數）
     public let dueInDays: Double?
 
-    /// 顯示分母（用於進度條右側 / 卡片右上角）
-    public let displayCycleDays: Double?
+    /// 顯示分母（用於進度條右側 / 卡片右上角）- 永不為 0
+    public let displayCycleDays: Double
 
     /// 顯示分子（距離「上次」到現在的天數）
     public let elapsedDays: Double
+    
+    /// 進度百分比 (0...1)
+    public let progress: Double
 }
 
 public enum StatsEngine {
@@ -72,19 +75,26 @@ public enum StatsEngine {
         // 目標間隔（天）
         let targetDays: Double? = target.map { convertToDays(value: $0.value, unit: $0.unit) }
 
-        // 進度條「分母」的優先級：avg → target → nil
-        let cycleDays: Double? = avgDays ?? targetDays
+        // 🔥 關鍵修復：進度條「分母」永不為 0，優先級：avg → target → 預設 30 天
+        let cycleDays: Double = {
+            if let avg = avgDays, avg > 0 { return avg }
+            if let target = targetDays, target > 0 { return target }
+            return 30.0 // 預設保底值
+        }()
 
         // 估算「下一次」與 dueIn
         var next: Date? = nil
         var dueIn: Double? = nil
-        if let last, let base = cycleDays, base > 0 {
-            next = last.addingTimeInterval(base * day)
+        if let last, cycleDays > 0 {
+            next = last.addingTimeInterval(cycleDays * day)
             dueIn = next!.timeIntervalSince(now) / day // 正：剩餘；負：逾期
         }
 
+        // 計算進度百分比 (0...1)
+        let progress = min(1.0, max(0.0, elapsed / cycleDays))
+
         // === 診斷 ===
-        logger?("Stats.compute ▶︎ total=\(total) last=\(last.map { iso8601($0) } ?? "nil") avg=\(avgDays?.rounded(to: 2) ?? -1) tgt=\(targetDays?.rounded(to: 2) ?? -1) cycle=\(cycleDays?.rounded(to: 2) ?? -1) elapsed=\(elapsed.rounded(to: 2)) dueIn=\(dueIn?.rounded(to: 2) ?? -999)")
+        logger?("Stats.compute ▶︎ total=\(total) last=\(last.map { iso8601($0) } ?? "nil") avg=\(avgDays?.rounded(to: 2) ?? -1) tgt=\(targetDays?.rounded(to: 2) ?? -1) cycle=\(cycleDays.rounded(to: 2)) elapsed=\(elapsed.rounded(to: 2)) dueIn=\(dueIn?.rounded(to: 2) ?? -999) progress=\(progress.rounded(to: 2))")
 
         return .init(
             createdAt: createdAt,
@@ -95,11 +105,12 @@ public enum StatsEngine {
             nextDate: next,
             dueInDays: dueIn,
             displayCycleDays: cycleDays,
-            elapsedDays: elapsed
+            elapsedDays: elapsed,
+            progress: progress
         )
     }
 
-    /// 百分比 0...1（給進度條）
+    /// 百分比 0...1（給進度條）- 已整合到 compute 結果中，此方法保留向後相容
     public static func progressRatio(elapsedDays: Double, cycleDays: Double?) -> Double {
         guard let denom = cycleDays, denom > 0 else { return 0 }
         return max(0, min(1, elapsedDays / denom))

@@ -33,7 +33,8 @@ public struct PillProgressBar: View {
     }
 
     public init(progress: Double, label: String, height: CGFloat = 28) {
-        self.progress = progress.clamped(to: 0...1)
+        // 🔥 修復：確保進度值安全，避免 NaN 或 Infinity
+        self.progress = max(0, min(1, progress.isFinite ? progress : 0))
         self.label = label
         self.height = height
     }
@@ -46,7 +47,9 @@ public struct PillProgressBar: View {
 
             // Fill
             GeometryReader { geo in
-                let w = max(0, min(1, progress)) * geo.size.width
+                // 🔥 修復：確保寬度計算安全，避免 NaN 或負值
+                let safeProgress = max(0, min(1, progress.isFinite ? progress : 0))
+                let w = max(0, safeProgress * geo.size.width)
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
                         .fill(fillGradient)
@@ -63,7 +66,7 @@ public struct PillProgressBar: View {
                             .frame(width: w)
                     )
                 }
-                .animation(.easeInOut(duration: 0.35), value: progress)
+                .animation(.easeInOut(duration: 0.35), value: safeProgress)
             }
 
             // 置中資訊：細一點、次要色

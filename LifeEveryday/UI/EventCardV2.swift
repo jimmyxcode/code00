@@ -1,5 +1,7 @@
 // MARK: - 3) EventCardV2
 import SwiftUI
+import CoreData
+import Combine
 
 public struct EventCardV2: View {
 
@@ -35,22 +37,29 @@ public struct EventCardV2: View {
 
     // ===== Derived UI values =====
     private var progress: CGFloat {
-        CGFloat(min(sinceLast / targetInterval, 1.0))
+        // 🔥 修復：使用安全的進度計算，避免除零
+        let safeTarget = max(targetInterval, 1) // 確保分母不為 0
+        return CGFloat(min(sinceLast / safeTarget, 1.0))
     }
 
-           private var progressLabel: String {
-               // Convert seconds to days for StatsEngine
-               let elapsedDays = sinceLast / 86400
-               let targetDays = targetInterval / 86400
-               let dueInDays = max(targetDays - elapsedDays, 0)
-               
-               // Format the progress line manually
-               let elapsedFormatted = StatsEngine.formatInterval(elapsedDays, unit: StatsUnit.days)
-               let targetFormatted = StatsEngine.formatInterval(targetDays, unit: StatsUnit.days)
-               let dueFormatted = StatsEngine.formatInterval(dueInDays, unit: StatsUnit.days)
-               
-               return "\(elapsedFormatted) / \(targetFormatted) · due in \(dueFormatted)"
-           }
+    private var progressLabel: String {
+        // 🔥 修復：使用安全的統計計算，避免 0/0/0 顯示
+        let elapsedDays = DateMath.safeDaysFrom(sinceLast)
+        let targetDays = DateMath.safeDaysFrom(targetInterval)
+        let dueInDays = max(targetDays - elapsedDays, 0)
+        
+        // 確保所有值都有合理的保底
+        let safeElapsed = max(elapsedDays, 0)
+        let safeTarget = max(targetDays, 1) // 最小 1 天
+        let safeDueIn = max(dueInDays, 0)
+        
+        // Format the progress line manually
+        let elapsedFormatted = StatsEngine.formatInterval(safeElapsed, unit: StatsUnit.days)
+        let targetFormatted = StatsEngine.formatInterval(safeTarget, unit: StatsUnit.days)
+        let dueFormatted = StatsEngine.formatInterval(safeDueIn, unit: StatsUnit.days)
+        
+        return "\(elapsedFormatted) / \(targetFormatted) · due in \(dueFormatted)"
+    }
 
     private var lastLine: String {
         guard let lastDate else { return "No record" }

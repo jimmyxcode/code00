@@ -77,26 +77,13 @@ struct HomeView: View {
                     .padding(.horizontal, 16)
                 } else {
                     ForEach(store.events) { ev in
-                        EventCardV2(
-                            title: ev.name,
-                            lastDate: store.lastEntry(for: ev.id)?.timestamp,
-                            targetInterval: (store.averageDays(for: ev.id) ?? 30) * 86400, // Convert days to seconds
-                            sinceLast: {
-                                if let lastDate = store.lastEntry(for: ev.id)?.timestamp {
-                                    return Date().timeIntervalSince(lastDate)
-                                } else {
-                                    return 0
-                                }
-                            }(),
-                            onQuickRecord: {
-                                print("🟦 HomeView: Quick Record button tapped for event:", ev.id.uuidString, ev.name)
-                                quickRecordTarget = ev
-                            },
-                            onLongPress: {
+                        // 🔥 使用新的 EventCardV3，自動計算統計並訂閱 context 變化
+                        EventCardV3(event: store.fetchEventObject(for: ev.id))
+                            .onLongPressGesture(minimumDuration: 0.35) {
+                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 editingEvent = ev
                             }
-                        )
-                        .padding(.horizontal, 16)
+                            .padding(.horizontal, 16)
                     }
                     Spacer(minLength: 24)
                 }

@@ -14,7 +14,11 @@ enum TimeUnit: String, CaseIterable {
 
 final class DataStore: ObservableObject {
     static let shared = DataStore()
-    private init() { refresh() }
+    private init() { 
+        // 🔥 關鍵修復：啟用 viewContext 自動合併
+        ctx.automaticallyMergesChangesFromParent = true
+        refresh() 
+    }
 
     private let container = PersistenceController.shared
     private var ctx: NSManagedObjectContext { container.context }
@@ -105,22 +109,34 @@ final class DataStore: ObservableObject {
         let before = e.entries?.count ?? 0
         print("🟦 entries count before:", before)
         
-        let r = CDEntry(context: ctx)
-        r.id = UUID(); r.timestamp = date; r.note = note; r.event = e
-        log(.create, entity: "CDEntry", id: r.id!, payload: [
-            "eventId": eventId.uuidString, "timestamp": ISO8601DateFormatter().string(from: date)
-        ])
+        // 🔥 關鍵修復：確保在主 context 中執行並強制保存
+        ctx.performAndWait {
+            let r = CDEntry(context: ctx)
+            r.id = UUID(); r.timestamp = date; r.note = note; r.event = e
+            log(.create, entity: "CDEntry", id: r.id!, payload: [
+                "eventId": eventId.uuidString, "timestamp": ISO8601DateFormatter().string(from: date)
+            ])
+            
+            // 強制保存到持久層
+            if ctx.hasChanges {
+                do {
+                    try ctx.save()
+                    print("🟩 context.save() OK")
+                } catch {
+                    print("🟥 context.save() FAILED:", error)
+                    ctx.rollback() // 失敗時回滾
+                    return
+                }
+            }
+        }
+        
+        // 🔥 確保 context 合併完成後再刷新 UI
+        ctx.refreshAllObjects()
         
         let after = e.entries?.count ?? 0
         print("🟦 entries count after:", after)
         
-        do {
-            try ctx.save()
-            print("🟩 context.save() OK")
-        } catch {
-            print("🟥 context.save() FAILED:", error)
-        }
-        
+        // 🔥 確保 UI 立即更新
         ctx.refreshAllObjects()
         refresh()
         NotificationCenter.default.post(name: .dataStoreDidChange, object: nil)
@@ -142,6 +158,11 @@ final class DataStore: ObservableObject {
     }
 
     func lastEntry(for eventId: UUID) -> LEEntry? { entries(for: eventId).first }
+    
+    /// 獲取 Core Data 事件對象（供 EventCardV3 使用）
+    func fetchEventObject(for eventId: UUID) -> CDEvent {
+        return fetchEvent(eventId) ?? CDEvent()
+    }
     
     /// 計算活動的平均間隔天數
     func averageDays(for eventId: UUID) -> Double? {
